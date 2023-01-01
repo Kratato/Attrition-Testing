@@ -9,5 +9,23 @@ local Window = Library:CreateWindow({
 
 local Tab = Window:CreateTab({
     Name = "General"
-})"
+})
+
+local Section = Tab:CreateSection({
+    Name = "Hax"
+})
+
+Section:AddButton({
+    Name = "Test",
+    Callback = function() end
+})
+
+Section:AddButton({
+    Name = "Test",
+    Callback = function() end
+})
+
+Section:AddButton({
+    Name = "Test",
+    Callback = function() end
 })
