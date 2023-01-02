@@ -103,9 +103,18 @@ local Update = RunService.RenderStepped:Connect(function()
         if Target ~= nil then
 			local targetPos = Camera:WorldToScreenPoint(Target.BodyParts[_G.AimPart].Position)
   			local mousePos = Camera:WorldToScreenPoint(Mouse.Hit.Position)
-			mousemoverel((targetPos.X - mousePos.X) / _G.Sensitivity, (targetPos.Y - mousePos.Y) / _G.Sensitivity)
+			
+            -- local distance = Vector2.new(targetPos - mousePos).Magnitude
+            
+            mousemoverel((targetPos.X - mousePos.X) * 0.8, (targetPos.Y - mousePos.Y) * 0.8)
+
+            
+            -- if distance < _G.CircleRadius * 0.2 then
+            --     mousemoverel((targetPos.X - mousePos.X) * 0.1, (targetPos.Y - mousePos.Y) * 0.1)
+            -- else
+            --     mousemoverel((targetPos.X - mousePos.X) * 0.8, (targetPos.Y - mousePos.Y) * 0.8)
+            -- end
 		end
-		Wait()
     end
 end)
 

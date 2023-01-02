@@ -17,6 +17,7 @@ local Tab = Window:CreateTab({
 })
 
 local VisualSection = Tab:CreateSection({Name="Visual",Side="Left"})
+local AimbotSection = Tab:CreateSection({Name="Aimbot",Side="Right"})
 local MovementSection = Tab:CreateSection({Name="Movement",Side="Right"})
 local MiscSection = Tab:CreateSection({Name="Miscellaneous",Side="Right"})
 
@@ -43,6 +44,12 @@ local Player = {
         Toggle = false,
         Speed = 50,
         NoClip = false
+    },
+    Aimbot = {
+        Toggle = false,
+        Color = Color3.fromRGB(255,255,255),
+        AimPart = "UpperTorso",
+        Radius = 240
     }
 }
 
@@ -232,6 +239,35 @@ local Vehicle = {
             end
         end,
         Callback = function(Value) Vehicle.Chams.OutlineTransparency = Value end
+    })
+
+-- Aimbot Section
+
+    local AimbotToggle = AimbotSection:AddToggle({
+        Name = "Aimbot",
+        Keybind = {Mode = "Toggle"},
+        Callback = function(Value) Player.Aimbot.Toggle = Value end
+    })
+
+    local AimbotColor = AimbotSection:AddColorPicker({
+        Name = "Color",
+        Value = Color3.fromRGB(255,255,255)
+    })
+
+    local AimbotAimPart = AimbotSection:AddDropDown({
+        Name = "Aim At:",
+        Value = "UpperTorso",
+        List = {"Head","UpperTorso","LowerTorso"},
+        Callback = function(Value) Player.Aimbot.AimPart = Value end
+    })
+
+    local AimbotSize = AimbotSection:AddSlider({
+        Name = "Size",
+        Value = 250,
+        Min = 50,
+        Max = 1000,
+        InputBox = true,
+        Callback = function(Value) Player.Aimbot.Radius = Value end
     })
 
 -- Movement Section
