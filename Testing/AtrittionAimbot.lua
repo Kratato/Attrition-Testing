@@ -2,8 +2,8 @@ local Camera = workspace.CurrentCamera
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
 local Holding = false
 
 local Red = {LegColor = BrickColor.new("Bright red"), Vehicle1 = BrickColor.new("Tawny"), Vehicle2 = BrickColor.new("Terra Cotta")}
@@ -12,9 +12,9 @@ local Red = {LegColor = BrickColor.new("Bright red"), Vehicle1 = BrickColor.new(
     local Team = LocalPlayer.Team
     local TeamColor
 
-    if Team == "United Bloxxers" then
+    if Team == game.Teams["United Bloxxers"] then
         TeamColor = Blue            
-    elseif Team == "League of 1x1x1x1" then
+    elseif Team == game.Teams["League of 1x1x1x1"] then
         TeamColor = Red
     else
         TeamColor = White
@@ -30,12 +30,12 @@ local Red = {LegColor = BrickColor.new("Bright red"), Vehicle1 = BrickColor.new(
 _G.AimbotEnabled = true
 _G.TeamCheck = true
 _G.AimPart = "Head"
-_G.Sensitivity = 0
+_G.Sensitivity = 1
 
 _G.CircleSides = 64
 _G.CircleColor = Color3.fromRGB(255, 255, 255)
 _G.CircleTransparency = 0.7
-_G.CircleRadius = 80
+_G.CircleRadius = 360
 _G.CircleFilled = false
 _G.CircleVisible = true
 _G.CircleThickness = 0
@@ -101,8 +101,11 @@ local Update = RunService.RenderStepped:Connect(function()
     if Holding == true and _G.AimbotEnabled == true then
         local Target = GetClosestPlayer()
         if Target ~= nil then
-            TweenService:Create(Camera, TweenInfo.new(_G.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(Camera.CFrame.Position, GetClosestPlayer().BodyParts[_G.AimPart].Position)}):Play()
-        end
+			local targetPos = Camera:WorldToScreenPoint(Target.BodyParts[_G.AimPart].Position)
+  			local mousePos = Camera:WorldToScreenPoint(Mouse.Hit.Position)
+			mousemoverel((targetPos.X - mousePos.X) / _G.Sensitivity, (targetPos.Y - mousePos.Y) / _G.Sensitivity)
+		end
+		Wait()
     end
 end)
 
