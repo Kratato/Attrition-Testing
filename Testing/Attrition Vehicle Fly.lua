@@ -2,7 +2,6 @@ local RS = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
 local Camera = workspace.CurrentCamera
 local CCF = Camera.CFrame
-local LocalCharacter
 local Vehicles = game.workspace.Vehicles
 local MinDistance = 100
 local LV
