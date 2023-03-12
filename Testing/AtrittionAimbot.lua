@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
+local MousePos = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
 local Holding = false
 
 local Red = {LegColor = BrickColor.new("Bright red"), Vehicle1 = BrickColor.new("Tawny"), Vehicle2 = BrickColor.new("Terra Cotta")}
@@ -55,7 +55,7 @@ local function GetClosestPlayer()
                 if v.BodyParts:FindFirstChildOfClass("BallSocketConstraint") == nil then
                     local ScreenPoint, Visible = Camera:WorldToScreenPoint(v.PrimaryPart.Position)
                     if Visible then
-                        local VectorDistance = (Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude                           
+                        local VectorDistance = (MousePos - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude                           
                         if VectorDistance < MaximumDistance then
                             MaximumDistance = VectorDistance
                             Target = v
@@ -82,7 +82,7 @@ local USIout = UserInputService.InputEnded:Connect(function(Input)
 end)
 
 local Update = RunService.RenderStepped:Connect(function()
-    FOVCircle.Position = Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
+    FOVCircle.Position = MousePos
     FOVCircle.Radius = _G.CircleRadius
     FOVCircle.Filled = _G.CircleFilled
     FOVCircle.Color = _G.CircleColor
@@ -95,9 +95,8 @@ local Update = RunService.RenderStepped:Connect(function()
     if Holding == true and _G.AimbotEnabled == true then
         local Target = GetClosestPlayer()
         if Target ~= nil then
-			local targetPos = Camera:WorldToScreenPoint(Target.BodyParts[_G.AimPart].Position)
-  			local mousePos = Camera:WorldToScreenPoint(Mouse.Hit.Position)	
-            mousemoverel((targetPos.X - mousePos.X) / 2, (targetPos.Y - mousePos.Y) / 2)
+			local targetPos = Camera:WorldToScreenPoint(Target.BodyParts[_G.AimPart].Position)	
+            mousemoverel((targetPos.X - MousePos.X) / 2, (targetPos.Y - MousePos.Y) / 2)
 		end
     end
 end)
